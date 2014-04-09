@@ -59,11 +59,12 @@ module Cequel
           records_by_identity[identity].hydrate(row)
         end
 
-        loaded_count = count { |record| record.loaded? }
-        if loaded_count < count
-          fail Cequel::Record::RecordNotFound,
-               "Expected #{count} results; got #{loaded_count}"
-        end
+        #loaded_count = count { |record| record.loaded? }
+        
+        #if loaded_count < count
+        #  fail Cequel::Record::RecordNotFound,
+        #       "Expected #{count} results; got #{loaded_count}"
+        #end
 
         self
       end
