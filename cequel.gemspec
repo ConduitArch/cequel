@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.authors = [
     'Mat Brown', 'Aubrey Holland', 'Keenan Brock', 'Insoo Buzz Jung',
     'Louis Simoneau', 'Peter Williams', 'Kenneth Hoffman', 'Antti Tapio',
-    'Ilya Bazylchuk'
+    'Ilya Bazylchuk', 'Dan Cardamore', 'Kei Kusakari'
   ]
   s.homepage = "https://github.com/cequel/cequel"
   s.email = 'mat.a.brown@gmail.com'
@@ -30,6 +30,6 @@ DESC
   s.add_development_dependency 'rspec', '~> 2.0'
   s.add_development_dependency 'yard', '~> 0.6'
   s.add_development_dependency 'rake', '~> 10.1'
-  s.add_development_dependency 'rubocop', '~> 0.19'
+  s.add_development_dependency 'rubocop', '~> 0.19.0'
   s.requirements << 'Cassandra >= 1.2.0'
 end

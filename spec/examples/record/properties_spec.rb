@@ -75,6 +75,13 @@ describe Cequel::Record::Properties do
       expect(Post.new.tags).to eq([])
     end
 
+    it 'should have empty list column value if unset in database' do
+      uniq_key = SecureRandom.uuid
+      Post.create! permalink: uniq_key
+      expect(Post[uniq_key].tags).to eq([])
+    end
+
+
     it 'should provide accessor for set column' do
       expect(Post.new { |post| post.categories = Set['Big Data', 'Cassandra'] }
         .categories).to eq(Set['Big Data', 'Cassandra'])
@@ -90,8 +97,14 @@ describe Cequel::Record::Properties do
         .to eq(Set['1', '2', '3'])
     end
 
-    it 'should have empty set column value if present' do
+    it 'should have empty set column value if not explicitly set' do
       expect(Post.new.categories).to eq(Set[])
+    end
+
+    it 'should handle saved records with unspecified set properties' do
+      uuid = SecureRandom.uuid
+      Post.create!(permalink: uuid)
+      expect(Post[uuid].categories).to eq(::Set[])
     end
 
     it 'should provide accessor for map column' do
@@ -112,15 +125,27 @@ describe Cequel::Record::Properties do
     it 'should set map column to empty hash by default' do
       expect(Post.new.shares).to eq({})
     end
+
+    it 'should handle saved records with unspecified map properties' do
+      uuid = SecureRandom.uuid
+      Post.create!(permalink: uuid)
+      expect(Post[uuid].shares).to eq({})
+    end
+
+
   end
 
   describe 'configured property defaults' do
     model :Post do
-      key :permalink, :text
+      key :permalink, :text, :default => 'new_permalink'
       column :title, :text, :default => 'New Post'
       list :tags, :text, :default => ['new']
       set :categories, :text, :default => Set['Big Data']
       map :shares, :text, :int, :default => {'facebook' => 0}
+    end
+
+    it 'should respect default for keys' do
+      Post.new.permalink.should == 'new_permalink'
     end
 
     it 'should respect default for data column' do
@@ -143,6 +168,7 @@ describe Cequel::Record::Properties do
   describe 'dynamic property generation' do
     model :Post do
       key :id, :uuid, auto: true
+      key :subid, :text, default: -> { "subid #{1+1}" }
       column :title, :text, default: -> { "Post #{Date.today}" }
     end
 
@@ -157,6 +183,10 @@ describe Cequel::Record::Properties do
           key :subdomain, :text, auto: true
         end
       end.to raise_error(ArgumentError)
+    end
+
+    it 'should run default proc on keys' do
+      Post.new.subid.should == "subid #{1+1}" 
     end
 
     it 'should run default proc' do

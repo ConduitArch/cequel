@@ -535,7 +535,12 @@ Cequel was written by:
 * Keenan Brock
 * Insoo Buzz Jung
 * Louis Simoneau
-* Randy Meech
+* Peter Williams
+* Kenneth Hoffman
+* Antti Tapio
+* Ilya Bazylchuk
+* Dan Cardamore
+* Kei Kusakari
 
 Special thanks to [Brewster](https://www.brewster.com), which supported the 0.x
 releases of Cequel.

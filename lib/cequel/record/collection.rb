@@ -120,8 +120,7 @@ module Cequel
       protected
 
       def __getobj__
-        model.__send__(:read_attribute, column_name) ||
-          model.__send__(:write_attribute, column_name, self.class.empty)
+        model.__send__(:read_attribute, column_name)
       end
 
       def __setobj__(obj)
@@ -184,13 +183,6 @@ module Cequel
       ]
       NON_ATOMIC_MUTATORS
         .each { |method| undef_method(method) if method_defined? method }
-
-      #
-      # @return [Array] an empty array
-      #
-      # @api private
-      #
-      def self.empty; []; end
 
       #
       # Set the value at a position or range of positions. This modification
